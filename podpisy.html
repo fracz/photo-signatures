@@ -1,0 +1,178 @@
+<html>
+<head>
+    <style type="text/css" media="all">
+        * {
+            box-sizing: border-box;
+        }
+
+        .photo-info {
+            font-family: Helvetica;
+            text-align: right;
+            width: 12cm;
+            height: 3cm;
+            padding: 15px;
+            border: 1px grey dotted;
+            float: left;
+            margin: 10px;
+        }
+
+        .exif-item {
+            margin: 3px 5px;
+            display: inline-block;
+        }
+
+        .exif-item span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .icon {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .icon.aperture {
+
+            background: url(flickr-icons.png) -77px -78px no-repeat;
+            width: 22px;
+            height: 22px;
+        }
+
+        .icon.focal {
+            background: url(flickr-icons.png) -40px -126px no-repeat;
+            width: 20px;
+            height: 22px;
+        }
+
+        .icon.exposure {
+            background: url(flickr-icons.png) -100px -78px no-repeat;
+            width: 20px;
+            height: 22px;
+        }
+
+        .icon.iso {
+            background: url(flickr-icons.png) -109px -126px no-repeat;
+            width: 24px;
+            height: 16px;
+        }
+
+        .icon.flash-off {
+            background: url(flickr-icons.png) 0 -126px no-repeat;
+            width: 19px;
+            height: 24px;
+        }
+
+        .icon.flash-on {
+            background: url(flickr-icons.png) -172px 0 no-repeat;
+            width: 17px;
+            height: 24px;
+        }
+
+        .icon.location {
+            background: url(flickr-icons.png) -172px -25px no-repeat;
+            width: 17px;
+            height: 23px;
+        }
+
+        .icon.author {
+            background: url(flickr-icons.png) 0 -78px no-repeat;
+            width: 22px;
+            height: 22px;
+        }
+
+        .icon.clock {
+            background: url(clock.png);
+            width: 22px;
+            height: 22px;
+        }
+    </style>
+</head>
+<body style="-webkit-print-color-adjust:exact;">
+
+<div id="photos">
+    <div class="photo-info" v-for="photo in photos">
+        <div>
+            <span class="exif-item">
+                <i class="icon location"></i>
+                <span>{{ photo.location }}, {{ photo.latitude }}, {{ photo.longitude }}</span>
+            </span>
+            <span class="exif-item">
+                <i class="icon clock"></i>
+                <span>{{ photo.time }}</span>
+            </span>
+        </div>
+        <div class="row">
+            <span class="exif-item">
+                <i class="icon aperture"></i>
+                <span>ƒ/{{ photo.aperture }}</span>
+            </span>
+
+            <span class="exif-item">
+                <i class="icon focal"></i>
+                <span>{{ photo.focalLength }} mm</span>
+            </span>
+
+            <span class="exif-item">
+                <i class="icon exposure"></i>
+                <span>{{ photo.exposureTime }}</span>
+            </span>
+
+            <span class="exif-item">
+                <i class="icon iso"></i>
+                <span>{{ photo.iso }}</span>
+            </span>
+
+            <span class="exif-item" v-if="!photo.flash">
+                <i class="icon flash-off"></i>
+            </span>
+
+            <span class="exif-item" v-if="photo.flash">
+                <i class="icon flash-on"></i>
+            </span>
+        </div>
+        <div>
+            <span class="exif-item">
+                <i class="icon author"></i>
+                <span>{{ photo.author }}</span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+<script>
+    new Vue({
+        el: '#photos',
+        data: {
+            photos: [
+                {
+                    author: 'Kasia',
+                    location: 'Londyn',
+                    latitude: '53.829N',
+                    longitude: '23.487E',
+                    time: '12:23, 31.08.2016',
+                    aperture: '8.0',
+                    focalLength: '10.5',
+                    exposureTime: '1/320',
+                    iso: '200',
+                    flash: true
+                },
+                {
+                    author: 'Kasia',
+                    location: 'Londyn',
+                    latitude: '53.829N',
+                    longitude: '23.487E',
+                    time: '12:23, 31.08.2016',
+                    aperture: '8.0',
+                    focalLength: '10.5',
+                    exposureTime: '1/320',
+                    iso: '1300',
+                    flash: false
+                }
+            ]
+        }
+    })
+</script>
+
+</body>
+</html>
