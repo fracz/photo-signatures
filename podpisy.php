@@ -13,7 +13,7 @@
             font-family: Helvetica;
             font-size: 16px;
             text-align: right;
-            width: 12cm;
+            width: 18cm;
             height: 3cm;
             padding: 15px;
             border: 1px grey dotted;
@@ -138,43 +138,91 @@
         <div>
             <span class="exif-item">
                 <i class="icon author"></i>
-                <span>{{ photo.author }}</span>
+                <span>{{ photo.author }}</span>,
+                <span>{{ photo.filename }}</span>
             </span>
         </div>
     </div>
 </div>
+
+<?php
+const BASE = __DIR__ . '/photos/';
+$photos = array_diff(scandir(BASE), array('.', '..'));
+$photosData = [];
+$customData = [
+    'DSC_0996.JPG' => [
+        'author' => 'Wojtek',
+        'location' => 'Warszawa, Park Szczęśliwicki',
+        'latitude' => '52°12\'26.5"N',
+        'longitude' => '20°57\'39.3"E',
+    ],
+    'DSC_2645.JPG' => [
+        'author' => 'Kasia',
+        'location' => 'Wiedeń, Hundertwasserhaus',
+        'latitude' => '48°12\'27.6"N',
+        'longitude' => '16°23\'38.8"E',
+    ],
+    'DSC_6568.JPG' => [
+        'author' => 'Kasia',
+        'location' => 'Mersea Island',
+        'latitude' => '51°46\'25.6"N',
+        'longitude' => '0°54\'58.1"E',
+    ],
+    'DSC_7997.JPG' => [
+        'author' => 'Kasia',
+        'location' => 'Londyn, St. Katharine Docks',
+        'latitude' => '51°30\'15.4"N',
+        'longitude' => '0°04\'31.2"W',
+    ],
+    'Praga_0214.JPG' => [
+        'author' => 'Kasia',
+        'location' => 'Dolni Morava, Sky Walk',
+        'focalLength' => '8',
+        'aperture' => '11',
+    ],
+    'Praga_1228.JPG' => [
+        'author' => 'Kasia',
+        'location' => 'Praga, Katedra św. Wita',
+        'focalLength' => '8',
+        'aperture' => '16',
+    ],
+    'Praga_1538.JPG' => [
+        'author' => 'Wojtek',
+        'location' => 'Praga, widok z Wieży Petrińskiej',
+    ]
+];
+foreach ($photos as $photo) {
+    $path = BASE . $photo;
+    $exif = exif_read_data($path);
+    if (isset($exif['GPSLatitude'])) {
+        eval('$lat = [' . $exif['GPSLatitude'][0] . ',' . $exif['GPSLatitude'][1] . ',round(' . $exif['GPSLatitude'][2] . ', 1)];');
+        $lat = "$lat[0]°$lat[1]'$lat[2]\"" . $exif['GPSLatitudeRef'];
+        eval('$lng = [' . $exif['GPSLongitude'][0] . ',' . $exif['GPSLongitude'][1] . ',round(' . $exif['GPSLongitude'][2] . ', 1)];');
+        $lng = "$lng[0]°$lng[1]'$lng[2]\"" . $exif['GPSLongitudeRef'];
+    }
+//    var_dump($exif);
+    $photosData[] = array_merge([
+        'author' => 'Kasia',
+        'location' => 'Londyn',
+        'filename' => $exif['FileName'],
+        'time' => date('G:i d.m.Y', $exif['FileDateTime']),
+        'iso' => $exif['ISOSpeedRatings'],
+        'flash' => !!$exif['Flash'],
+        'aperture' => explode('/', $exif['COMPUTED']['ApertureFNumber'])[1],
+        'exposureTime' => '1/' . (explode('/', $exif['ExposureTime'])[1] / 10),
+        'focalLength' => number_format(explode('/', $exif['FocalLength'])[0] / 10, 0),
+        'latitude' => $lat ?? '',
+        'longitude' => $lng ?? '',
+    ], $customData[$photo] ?? []);
+}
+?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
 <script>
     new Vue({
         el: '#photos',
         data: {
-            photos: [
-                {
-                    author: 'Kasia',
-                    location: 'Londyn',
-                    latitude: '53.829N',
-                    longitude: '23.487E',
-                    time: '12:23, 31.08.2016',
-                    aperture: '8.0',
-                    focalLength: '10.5',
-                    exposureTime: '1/320',
-                    iso: '200',
-                    flash: true
-                },
-                {
-                    author: 'Kasia',
-                    location: 'Londyn',
-                    latitude: '53.829N',
-                    longitude: '23.487E',
-                    time: '12:23, 31.08.2016',
-                    aperture: '8.0',
-                    focalLength: '10.5',
-                    exposureTime: '1/320',
-                    iso: '1300',
-                    flash: false
-                }
-            ]
+            photos: <?=json_encode($photosData)?>
         }
     })
 </script>
