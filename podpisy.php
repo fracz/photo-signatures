@@ -10,7 +10,7 @@
         }
 
         .photo-info {
-            font-family: Helvetica;
+            font-family: Arial;
             font-size: 16px;
             text-align: right;
             width: 18cm;
@@ -147,7 +147,7 @@
 
 <?php
 const BASE = __DIR__ . '/photos/';
-$photos = array_diff(scandir(BASE), array('.', '..'));
+$photos = array_diff(scandir(BASE), array('.', '..', '.gitignore'));
 $photosData = [];
 $customData = [
     'DSC_0996.JPG' => [
