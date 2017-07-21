@@ -90,6 +90,13 @@
             width: 22px;
             height: 22px;
         }
+
+        .icon.image {
+            background: url(image.png);
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+        }
     </style>
 </head>
 <body style="-webkit-print-color-adjust:exact;">
@@ -137,8 +144,8 @@
         </div>
         <div>
             <span class="exif-item">
-                <i class="icon author"></i>
-                <span>{{ photo.author }}</span>,
+                <i class="icon image"></i>
+<!--                <span>{{ photo.author }}</span>,-->
                 <span>{{ photo.filename }}</span>
             </span>
         </div>
@@ -150,46 +157,20 @@ const BASE = __DIR__ . '/photos/';
 $photos = array_diff(scandir(BASE), array('.', '..', '.gitignore'));
 $photosData = [];
 $customData = [
-    'DSC_0996.JPG' => [
-        'author' => 'Wojtek',
-        'location' => 'Warszawa, Park Szczęśliwicki',
-        'latitude' => '52°12\'26.5"N',
-        'longitude' => '20°57\'39.3"E',
-    ],
-    'DSC_2645.JPG' => [
-        'author' => 'Kasia',
-        'location' => 'Wiedeń, Hundertwasserhaus',
-        'latitude' => '48°12\'27.6"N',
-        'longitude' => '16°23\'38.8"E',
-    ],
-    'DSC_6568.JPG' => [
-        'author' => 'Kasia',
-        'location' => 'Mersea Island',
-        'latitude' => '51°46\'25.6"N',
-        'longitude' => '0°54\'58.1"E',
-    ],
-    'DSC_7997.JPG' => [
-        'author' => 'Kasia',
-        'location' => 'Londyn, St. Katharine Docks',
-        'latitude' => '51°30\'15.4"N',
-        'longitude' => '0°04\'31.2"W',
-    ],
-    'Praga_0214.JPG' => [
-        'author' => 'Kasia',
-        'location' => 'Dolni Morava, Sky Walk',
-        'focalLength' => '8',
-        'aperture' => '11',
-    ],
-    'Praga_1228.JPG' => [
-        'author' => 'Kasia',
-        'location' => 'Praga, Katedra św. Wita',
-        'focalLength' => '8',
-        'aperture' => '16',
-    ],
-    'Praga_1538.JPG' => [
-        'author' => 'Wojtek',
-        'location' => 'Praga, widok z Wieży Petrińskiej',
-    ]
+    'DSC_3631.JPG' => ['location' => 'Wąwóz Vintigar, Słowenia'],
+    'DSC_3879.JPG' => ['location' => 'Spodnja Sorica, Słowenia'],
+    'DSC_4173.JPG' => ['location' => 'Canal Grande, Wenecja'],
+    'DSC_4442.JPG' => ['location' => 'Plac Świętego Marka, Wenecja'],
+    'DSC_5016.JPG' => ['location' => 'Viale Miramare, Triest, Włochy'],
+    'DSC_5932.JPG' => ['location' => 'Triest, Włochy'],
+    'DSC_6753.JPG' => ['location' => 'Jeziora plitwickie, Chorwacja'],
+    'DSC_7280_hdr.JPG' => ['location' => 'Karlobag, Chorwacja'],
+    'DSC_7309_hdr.JPG' => ['location' => 'Karlobag, Chorwacja'],
+    'DSC_7892.JPG' => ['location' => 'Rovnj, Chorwacja'],
+    'DSC_8421.JPG' => ['location' => 'Rovnj, Chorwacja'],
+    'DSC_9224.JPG' => ['location' => 'Piran, Słowenia'],
+    'Macedonia_2017_1118.JPG' => ['location' => 'Jezioro Ohrydzkie, Macedonia'],
+    'Macedonia_2017_3489.JPG' => ['location' => 'Kratowo, Macedonia'],
 ];
 foreach ($photos as $photo) {
     $path = BASE . $photo;
@@ -201,16 +182,17 @@ foreach ($photos as $photo) {
         $lng = "$lng[0]°$lng[1]'$lng[2]\"" . $exif['GPSLongitudeRef'];
     }
 //    var_dump($exif);
+    $focalLength = number_format(explode('/', $exif['FocalLength'])[0] / 10, 1);
     $photosData[] = array_merge([
         'author' => 'Kasia',
         'location' => 'Londyn',
         'filename' => $exif['FileName'],
-        'time' => date('G:i d.m.Y', $exif['FileDateTime']),
+        'time' => date('G:i d.m.Y', strtotime($exif['DateTimeOriginal'])),
         'iso' => $exif['ISOSpeedRatings'],
         'flash' => !!$exif['Flash'],
         'aperture' => explode('/', $exif['COMPUTED']['ApertureFNumber'])[1],
         'exposureTime' => '1/' . (explode('/', $exif['ExposureTime'])[1] / 10),
-        'focalLength' => number_format(explode('/', $exif['FocalLength'])[0] / 10, 0),
+        'focalLength' => intval($focalLength) == $focalLength ? intval($focalLength) : $focalLength,
         'latitude' => $lat ?? '',
         'longitude' => $lng ?? '',
     ], $customData[$photo] ?? []);
