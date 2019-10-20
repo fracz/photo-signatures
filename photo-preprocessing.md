@@ -19,4 +19,12 @@ opkg install perl-image-exiftool jhead
 jhead -ft *.jpg
 ```
 
+# Fixing EXIF dates
+
+Shift by hours
+
+```
+exiftool -overwrite_original -progress "-DateTimeOriginal+=0:0:1 0:0:0" -if '$datetimeoriginal =~ /^2019:10:13/' .
+```
+
 # Renaming files to names with dates
