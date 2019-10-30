@@ -28,3 +28,7 @@ exiftool -overwrite_original -progress "-DateTimeOriginal+=0:0:1 0:0:0" -if '$da
 ```
 
 # Renaming files to names with dates
+
+```
+exiftool -overwrite_original -progress -d 'Rzym_%Y-%m-%d-%H%M%S-%%01.c.%%e' '-filename<CreateDate' .
+```
