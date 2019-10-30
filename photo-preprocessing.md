@@ -3,7 +3,7 @@
 [Exiftool documentation](https://sno.phy.queensu.ca/~phil/exiftool/geotag.html)
 
 ```
- exiftool -overwrite_original -progress -api GeoMaxIntSecs=0 -api GeoMaxExtSecs=900 -geotag gpx/20190907.gpx -geotag gpx/20190908.gpx .
+ exiftool -overwrite_original -progress -P -api GeoMaxIntSecs=0 -api GeoMaxExtSecs=900 -geotag gpx/20190907.gpx -geotag gpx/20190908.gpx .
 ```
 
 # Setting file date to the EXIF date
@@ -30,5 +30,5 @@ exiftool -overwrite_original -progress "-DateTimeOriginal+=0:0:1 0:0:0" -if '$da
 # Renaming files to names with dates
 
 ```
-exiftool -overwrite_original -progress -d 'Rzym_%Y-%m-%d-%H%M%S-%%01.c.%%e' '-filename<CreateDate' .
+exiftool -overwrite_original -progress -P -d 'Rzym_%Y-%m-%d-%H%M%S-%%01.c.%%e' '-filename<CreateDate' .
 ```
