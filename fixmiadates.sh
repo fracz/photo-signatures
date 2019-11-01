@@ -11,3 +11,6 @@ do
     echo "Skipped "$name
   fi
 done
+
+exiftool -overwrite_original -progress "-DateTimeOriginal<FileModifyDate" VID_20*.jpg
+exiftool -overwrite_original -progress "-DateTimeOriginal<FileModifyDate" IMG_20*.jpg
