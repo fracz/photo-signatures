@@ -12,7 +12,6 @@ On QNAP:
 
 ```
 opkg install perl-image-exiftool jhead
-
 ```
 
 ```
@@ -25,10 +24,4 @@ Shift by hours
 
 ```
 exiftool -overwrite_original -progress "-DateTimeOriginal+=0:0:1 0:0:0" -if '$datetimeoriginal =~ /^2019:10:13/' .
-```
-
-# Renaming files to names with dates
-
-```
-exiftool -overwrite_original -progress -P -d 'Rzym_%Y-%m-%d-%H%M%S-%%01.c.%%e' '-filename<DateTimeOriginal' .
 ```
