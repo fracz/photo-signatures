@@ -25,3 +25,12 @@ Shift by hours
 ```
 exiftool -overwrite_original -progress "-DateTimeOriginal+=0:0:1 0:0:0" -if '$datetimeoriginal =~ /^2019:10:13/' .
 ```
+
+# Synchronizing rest and main directories
+
+```
+cd dir-with-photos
+find . -maxdepth 1 -type f -exec echo 'rest/{}' ';'
+```
+
+If the list is ok, replace `echo` with `rm` and execute.
