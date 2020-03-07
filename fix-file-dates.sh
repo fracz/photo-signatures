@@ -20,4 +20,5 @@ do
 done
 
 exiftool -overwrite_original -P -progress -ext jpg "-CreateDate<FileModifyDate" "-DateTimeOriginal<FileModifyDate" .
-exiftool -overwrite_original -P -progress -ext mp4 -api QuickTimeUTC "-CreateDate<FileModifyDate" "-MediaCreateDate<FileModifyDate" "-MediaModifyDate<FileModifyDate" "-TrackCreateDate<FileModifyDate" "-TrackModifyDate<FileModifyDate" .
+exiftool -overwrite_original -P -progress -ext mp4                    "-CreateDate<FileModifyDate" "-ModifyDate<FileModifyDate" "-MediaCreateDate<FileModifyDate" "-MediaModifyDate<FileModifyDate" "-TrackCreateDate<FileModifyDate" "-TrackModifyDate<FileModifyDate" .
+#exiftool -overwrite_original -P -progress -ext mp4 -api QuickTimeUTC "-CreateDate<FileModifyDate" "-ModifyDate<FileModifyDate" "-MediaCreateDate<FileModifyDate" "-MediaModifyDate<FileModifyDate" "-TrackCreateDate<FileModifyDate" "-TrackModifyDate<FileModifyDate" .
